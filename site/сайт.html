@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarayashiki - Action RPG Hack and Slash</title>
+    <style>
+        /* Общие стили */
+        :root {
+            --primary-color: #8B0000;
+            --secondary-color: #DAA520;
+            --dark-color: #1A1A1A;
+            --light-color: #F5F5F5;
+            --accent-color: #4B0082;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        
+        body {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+        }
+        
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Шапка */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1492571350019-22de08371fd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+        
+        /* Навигация */
+        nav {
+            background-color: rgba(26, 26, 26, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Основное содержимое */
+        main {
+            padding: 80px 0;
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        h1, h2, h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 15px auto;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        /* Секция "О проекте" */
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .about-image img {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Участники */
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .member {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .member h3 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .member h3 .tg {
+            font-size: 0.8rem;
+            color: #777;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+        
+        .member p {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        
+        .member .dates {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 15px;
+            border-top: 1px dashed #444;
+            padding-top: 10px;
+        }
+        
+        /* Журнал */
+        .journal-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .post {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 30px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .post-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        /* Ресурсы */
+        .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .resource-card h3 {
+            margin-bottom: 10px;
+        }
+        
+        /* Подвал */
+        footer {
+            background-color: #111;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            font-size: 1.5rem;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .team-members {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка с навигацией -->
+    <nav>
+        <div class="container">
+            <div class="logo">Sarayashiki</div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О проекте</a></li>
+                <li><a href="#team">Участники</a></li>
+                <li><a href="#journal">Журнал</a></li>
+                <li><a href="#resources">Ресурсы</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Герой-секция -->
+    <header id="home">
+        <h1 class="logo">Sarayashiki</h1>
+        <p class="tagline">Многовековой порядок жизни людей и ёкаев нарушен. В хаосе периода Сэнгоку кланы сражаются за власть и территории, объединяясь с таинственными ёкаями и они.</p>
+        <a href="#about" style="color: var(--light-color); background-color: var(--primary-color); padding: 10px 30px; border-radius: 5px; margin-top: 20px;">Узнать больше</a>
+    </header>
+
+    <!-- Основное содержимое -->
+    <main>
+        <!-- О проекте -->
+        <section id="about" class="container">
+            <h2>О проекте</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Sarayashiki - это мультиплеерная сессионная Action RPG в сеттинге феодальной Японии периода Сэнгоку, где игроки принимают на себя роли самураев или дайме, сражающихся за власть и территории в мире, где люди сосуществуют с мифическими существами ёкаями и демонами они.</p>
+                    <p>Игра разделена на три ключевые стадии: волны мобов, закупка предметов и PvP-сражения. Выбор клана определяет начальные характеристики персонажа и открывает уникальные возможности для союзов с мифическими существами.</p>
+                    <p>Особенностью игры является механика Чести, которая влияет на статус персонажа в игровом мире и определяет условия победы. Игроки должны балансировать между стратегическим планированием, тактическими решениями в бою и дипломатическими союзами.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1545566239-0d774cb9f7e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Феодальная Япония">
+                </div>
+            </div>
+        </section>
+
+        <!-- Участники -->
+        <section id="team" class="container">
+            <h2>Участники проекта</h2>
+            <div class="team-members">
+                <div class="member">
+                    <h3>Алекс Николаев <span class="tg">@sqwirex</span></h3>
+                    <p>Геймдизайн, концепция игры</p>
+                    <p>Разработка системы кланов и механики Чести</p>
+                    <div class="dates">Присоединился: 10 февр. 2025 г.<br>Последняя активность: 25 марта 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Alexandra Lazareva <span class="tg">@i_irazzy</span></h3>
+                    <p>Художественное оформление, UI/UX</p>
+                    <p>Создание визуального стиля и интерфейсов</p>
+                    <div class="dates">Присоединилась: 11 февр. 2025 г.<br>Последняя активность: 06 марта 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Alexey Chegodaev <span class="tg">@aschegodaev</span></h3>
+                    <p>Программирование, реализация механик</p>
+                    <p>Разработка PvP-системы и AI противников</p>
+                    <div class="dates">Присоединился: 18 июня 2024 г.<br>Последняя активность: 16 февр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Антон Осадчий <span class="tg">@потеря</span></h3>
+                    <p>3D-моделирование персонажей</p>
+                    <p>Создание анимаций для боевой системы</p>
+                    <div class="dates">Присоединился: 11 февр. 2025 г.<br>Последняя активность: 08 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Магомед Магомедов <span class="tg">@muhammad8436</span></h3>
+                    <p>Звуковое оформление</p>
+                    <p>Создание атмосферных звуков и музыки</p>
+                    <div class="dates">Присоединился: 11 февр. 2025 г.<br>Последняя активность: 27 марта 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Платон Ануфриев <span class="tg">@inccv</span></h3>
+                    <p>Тестирование игрового процесса</p>
+                    <p>Балансировка характеристик</p>
+                    <div class="dates">Присоединился: 10 февр. 2025 г.<br>Последняя активность: 24 февр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>прон1х <span class="tg">@gepron1x</span></h3>
+                    <p>Разработка квестов и сюжетных линий</p>
+                    <p>Диалоги и текстовое наполнение</p>
+                    <div class="dates">Присоединился: 11 февр. 2025 г.<br>Последняя активность: 13 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>ilya malyshev <span class="tg">@draponoid</span></h3>
+                    <p>Оптимизация производительности</p>
+                    <p>Работа с сетью для мультиплеера</p>
+                    <div class="dates">Присоединился: 11 февр. 2025 г.<br>Последняя активность: 14 февр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>дженкинс <span class="tg">@дженкинс</span></h3>
+                    <p>Система достижений</p>
+                    <p>Интеграция аналитики</p>
+                    <div class="dates">Присоединился: 21 июля 2024 г.<br>Последняя активность: 16 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Евгений Сафронов <span class="tg">@эмсафронов</span></h3>
+                    <p>Менеджмент проекта</p>
+                    <p>Координация работы команды</p>
+                    <div class="dates">Присоединился: 30 мая 2024 г.<br>Последняя активность: 20 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Кирилл Петров <span class="tg">@kirabrin</span></h3>
+                    <p>Маркетинг и PR</p>
+                    <p>Работа с коммьюнити</p>
+                    <div class="dates">Присоединился: 10 февр. 2025 г.<br>Последняя активность: 14 февр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Максим Коваленко <span class="tg">@zealys</span></h3>
+                    <p>Разработка инвентаря</p>
+                    <p>Система крафта и улучшений</p>
+                    <div class="dates">Присоединился: 10 февр. 2025 г.<br>Последняя активность: 20 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Матвей Ушаков <span class="tg">@mvushakov</span></h3>
+                    <p>Создание окружения</p>
+                    <p>Дизайн локаций</p>
+                    <div class="dates">Присоединился: 11 июня 2024 г.<br>Последняя активность: 13 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Анастасия Митрофанова <span class="tg">@nastia_m</span></h3>
+                    <p>Концепт-арт персонажей</p>
+                    <p>Дизайн костюмов и брони</p>
+                    <div class="dates">Присоединилась: 19 февр. 2025 г.<br>Последняя активность: 02 марта 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Олег Никитин <span class="tg">@oenikitin</span></h3>
+                    <p>Ведущий разработчик</p>
+                    <p>Архитектура игрового движка</p>
+                    <div class="dates">Присоединился: 29 мая 2024 г.<br>Последняя активность: 12 апр. 2025 г.</div>
+                </div>
+                <div class="member">
+                    <h3>Тамара Татарникова <span class="tg">@acidkoujou</span></h3>
+                    <p>Писательница сюжета</p>
+                    <p>Разработка лора и мифологии</p>
+                    <div class="dates">Присоединилась: 19 февр. 2025 г.<br>Последняя активность: 19 февр. 2025 г.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Журнал -->
+        <section id="journal" class="container">
+            <h2>Журнал разработки</h2>
+            <div class="journal-posts">
+                <div class="post">
+                    <div class="post-header">
+                        <h3>Концепция и базовые механики</h3>
+                        <span class="post-date">15.03.2023</span>
+                    </div>
+                    <p>Завершена работа над основной концепцией игры. Определены три ключевые стадии игрового процесса: волны мобов, закупка предметов и PvP-сражения. Разработана система кланов, которая влияет на начальные характеристики персонажа и доступные союзы с мифическими существами. Начата работа над механикой Чести, которая будет определять условия победы в игре.</p>
+                </div>
+                <div class="post">
+                    <div class="post-header">
+                        <h3>Художественный стиль и UI</h3>
+                        <span class="post-date">05.04.2023</span>
+                    </div>
+                    <p>Определен художественный стиль игры, вдохновленный традиционной японской живописью и гравюрами укиё-э. Созданы первые концепт-арты персонажей и локаций. Разработаны базовые элементы пользовательского интерфейса, включая экраны выбора клана, инвентаря и карты сражений. Особое внимание уделено сохранению атмосферы феодальной Японии во всех визуальных элементах.</p>
+                </div>
+                <div class="post">
+                    <div class="post-header">
+                        <h3>Реализация PvP-системы</h3>
+                        <span class="post-date">22.04.2023</span>
+                    </div>
+                    <p>Завершена первая версия PvP-системы, включающая механику дуэлей между игроками. Реализована система подбора соперников на основе механики Чести. Добавлены различные типы атак и защитных маневров, характерные для самурайских поединков. Начата работа над системой визуальных эффектов для боевых действий, чтобы сделать сражения более зрелищными.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ресурсы -->
+        <section id="resources" class="container">
+            <h2>Полезные ресурсы</h2>
+            <div class="resources-list">
+                <div class="resource-card">
+                    <h3>Японская мифология</h3>
+                    <p>Подробный справочник по японской мифологии, включающий описание ёкаев, демонов и других мифических существ.</p>
+                    <a href="https://godsbay.ru/orient/japan.html" target="_blank">Перейти →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Период Сэнгоку</h3>
+                    <p>Историческая справка о периоде Сэнгоку в Японии, времени междоусобных войн и социальных потрясений.</p>
+                    <a href="http://sengoku.ru/archive/library/history/reviews/215060-01.htm" target="_blank">Перейти →</a>
+                </div>
+                <div class="resource-card">
+                    <h3>Самураи и их кодекс</h3>
+                    <p>Статья о самурайской культуре, кодексе бусидо и роли дуэлей в феодальной Японии.</p>
+                    <a href="https://dzen.ru/a/ZA2qJZDTsBHs0Frg" target="_blank">Перейти →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p class="copyright">© 2023 Sarayashiki Project. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Иконки Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
